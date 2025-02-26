@@ -1,0 +1,70 @@
+meta {
+  name: PUT DSP Endpoint to Fleet Vehicle SM in Car Twin
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{CUSTOMER_SM_REGISTRY}}/submodel-descriptors/{{CUSTOMER_QT_AAS_SM_VEHICLE_TECH_ID_ENCODED}}
+  body: json
+  auth: none
+}
+
+params:query {
+  ~null: 
+}
+
+headers {
+  Edc-Bpn: {{SUPPLIER_BPNL}}
+}
+
+body:json {
+  {
+    "description": [
+      {
+        "language": "en",
+        "text": "This aspect model was created in the Catena-X use case quality. The purpose of this aspect model is to transfer general information of a list/fleet of vehicles - primarily how the vehicles are equipped, when they were built and which engines are installed."
+      }
+    ],
+    "idShort": "Vehicles",
+    "id": "{{CUSTOMER_QT_AAS_SM_VEHICLE_TECH_ID}}",
+    "semanticId": {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "ConceptDescription",
+          "value": "urn:samm:io.catenax.fleet.vehicles:3.0.0#Vehicles"
+        }
+      ]
+    },
+    "endpoints": [
+      {
+        "protocolInformation": {
+          "href": "{{CUSTOMER_SM_REPO}}/submodels/{{CUSTOMER_QT_AAS_SM_VEHICLE_TECH_ID_ENCODED}}",
+          "endpointProtocol": "http"
+        },
+        "interface": "SUBMODEL-3.0"
+      },
+      {
+        "interface": "SUBMODEL-3.0",
+        "protocolInformation": {
+          "href": "{{CUSTOMER_DP_EDC_EXT_HOSTNAME}}/api/public/{{CUSTOMER_QT_AAS_SM_VEHICLE_TECH_ID_ENCODED}}",
+          "endpointProtocol": "HTTP",
+          "endpointProtocolVersion": [
+            "1.1"
+          ],
+          "subprotocol": "DSP",
+          "subprotocolBodyEncoding": "plain",
+          "subprotocolBody": "id={{CUSTOMER_SM_REPO_ASSET_ID}};dspEndpoint={{CUSTOMER_EDC}}/api/v1/dsp",
+          "securityAttributes": [
+            {
+              "type": "NONE",
+              "key": "NONE",
+              "value": "NONE"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "realm" : "Catena-X",
+  "users" : [ {
+    "id" : "c286fc2b-54da-4b50-9b28-1d26b24034b3",
+    "createdTimestamp" : 1711643865912,
+    "username" : "dtr_administrate_backend",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "credentials" : [ {
+      "id" : "4b8779c6-7c84-4318-8909-244600afacc5",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1711643889042,
+      "secretData" : "{\"value\":\"JO9X0d7mQq/uLtpdvTUWd9I3prg6i5BcXi6OqxoOZ6M=\",\"salt\":\"RyBNMaOCckLWmywyfpzfmA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cl-puris" ],
+    "clientRoles" : {
+      "FOSS-EDC-Client" : [ "add_digital_twin", "delete_digital_twin", "update_digital_twin", "submodel_access_control", "read_access_rules", "view_digital_twin" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "efe25e84-c7a7-4fb9-ac61-fb1ad5e55bea",
+    "createdTimestamp" : 1711643842368,
+    "username" : "dtr_read_edc",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "credentials" : [ {
+      "id" : "ab4e5f2e-5345-410c-b7f7-b662cb9eb9e0",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1711643907750,
+      "secretData" : "{\"value\":\"j8XPzODNsKKiZyvA5szQe44UWUWQbH2zoZwAtgMfNXI=\",\"salt\":\"CVLTt8m1CcOWTdvd6HrSlw==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cl-puris" ],
+    "clientRoles" : {
+      "FOSS-EDC-Client" : [ "view_digital_twin" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "95377ea5-7894-4d0d-8f58-30ef4796c7de",
+    "createdTimestamp" : 1712062906110,
+    "username" : "edc_dtr",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cl-puris" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "509f9b55-ea1b-4bc8-964d-9d47bafe3d55",
+    "createdTimestamp" : 1712066409143,
+    "username" : "service-account-foss-dtr-client",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "serviceAccountClientId" : "FOSS-DTR-CLIENT",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cl-puris" ],
+    "clientRoles" : {
+      "FOSS-DTR-CLIENT" : [ "update_digital_twin", "write_access_rules", "submodel_access_control", "view_digital_twin", "delete_digital_twin", "read_access_rules", "add_digital_twin" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
+    "id" : "12e82c52-1786-417b-8258-70a41ec3ec55",
+    "createdTimestamp" : 1711643730251,
+    "username" : "service-account-foss-edc-client",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "serviceAccountClientId" : "FOSS-EDC-Client",
+    "credentials" : [ ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-cl-puris" ],
+    "clientRoles" : {
+      "FOSS-EDC-Client" : [ "view_digital_twin" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  } ]
+}

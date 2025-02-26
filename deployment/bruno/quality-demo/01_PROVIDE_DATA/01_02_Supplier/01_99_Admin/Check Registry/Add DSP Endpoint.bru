@@ -1,0 +1,56 @@
+meta {
+  name: Add DSP Endpoint
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{SUPPLIER_AAS_REGISTRY}}/shell-descriptors
+  body: json
+  auth: none
+}
+
+params:query {
+  ~null: 
+}
+
+headers {
+  Edc-Bpn: {{SUPPLIER_BPNL}}
+}
+
+body:json {
+  {
+    "paging_metadata": {
+      "cursor": null
+    },
+    "result": [
+      {
+        "description": null,
+        "displayName": null,
+        "extensions": null,
+        "administration": null,
+        "assetKind": "Instance",
+        "assetType": "Car",
+        "endpoints": [
+          {
+            "interface": "AAS-3.0",
+            "protocolInformation": {
+              "href": "http://localhost:8081/shells/ZTM4YTBmOTItNGVlOC00MzZjLWE1MzUtMGY5Y2RhZDRjM2M4",
+              "endpointProtocol": "http",
+              "endpointProtocolVersion": null,
+              "subprotocol": null,
+              "subprotocolBody": null,
+              "subprotocolBodyEncoding": null,
+              "securityAttributes": null
+            }
+          }
+        ],
+        "globalAssetId": "urn:uuid:54cba8c7-8007-45f7-9ac8-bf90819a5f28",
+        "idShort": "Car",
+        "id": "e38a0f92-4ee8-436c-a535-0f9cdad4c3c8",
+        "specificAssetIds": null,
+        "submodelDescriptors": null
+      }
+    ]
+  }
+}

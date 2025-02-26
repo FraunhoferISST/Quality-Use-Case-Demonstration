@@ -1,0 +1,19 @@
+meta {
+  name: Get Submodel by ID
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{SUPPLIER_SM_REPO}}/submodels/{{SUPPLIER_CU_AAS_SM_QUALITY_ANALYSIS_TECH_ID_ENCODED}}/$value
+  body: none
+  auth: none
+}
+
+params:query {
+  ~null: 
+}
+
+headers {
+  Edc-Bpn: {{SUPPLIER_BPNL}}
+}

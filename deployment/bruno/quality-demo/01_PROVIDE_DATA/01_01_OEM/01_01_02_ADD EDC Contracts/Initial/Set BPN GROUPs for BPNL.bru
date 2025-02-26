@@ -1,0 +1,29 @@
+meta {
+  name: Set BPN GROUPs for BPNL
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{CUSTOMER_EDC}}/{{MANAGEMENT_PATH}}/business-partner-groups
+  body: json
+  auth: apikey
+}
+
+auth:apikey {
+  key: X-API-KEY
+  value: {{CUSTOMER_EDC_API_KEY}}
+  placement: header
+}
+
+body:json {
+  {
+    "@context": {
+      "tx": "https://w3id.org/tractusx/v0.0.1/ns/"
+    },
+    "@id": "{{SUPPLIER_BPNL}}", // can be any text - no validation here
+    "tx:groups": [
+      "{{CUSTOMER_ACCESS_POLICY_BPN_GROUP_NAME}}"
+    ]
+  }
+}

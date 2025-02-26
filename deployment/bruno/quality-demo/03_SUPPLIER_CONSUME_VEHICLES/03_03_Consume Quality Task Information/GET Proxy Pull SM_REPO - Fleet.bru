@@ -1,0 +1,21 @@
+meta {
+  name: GET Proxy Pull SM_REPO - Fleet
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://customer-data-plane:8285/api/public/{{CUSTOMER_QT_AAS_SM_VEHICLE_TECH_ID_ENCODED}}
+  body: none
+  auth: apikey
+}
+
+headers {
+  Authorization: {{SUPPLIER_SM_REPO_EDR_AUTH}}
+}
+
+auth:apikey {
+  key: X-API-KEY
+  value: {{SUPPLIER_EDC_API_KEY}}
+  placement: header
+}

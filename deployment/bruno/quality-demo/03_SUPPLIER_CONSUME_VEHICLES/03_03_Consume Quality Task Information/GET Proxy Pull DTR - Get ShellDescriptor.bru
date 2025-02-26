@@ -1,0 +1,33 @@
+meta {
+  name: GET Proxy Pull DTR - Get ShellDescriptor
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://customer-data-plane:8285/api/public/shell-descriptors/{{CUSTOMER_QT_AAS_TECH_ID_ENCODED}}
+  body: none
+  auth: apikey
+}
+
+headers {
+  Authorization: {{SUPPLIER_DTR_EDR_AUTH}}
+}
+
+auth:apikey {
+  key: X-API-KEY
+  value: {{SUPPLIER_EDC_API_KEY}}
+  placement: header
+}
+
+script:pre-request {
+  // const materialNumberCustomer = bru.getEnvVar('CAR_MATERIAL_NUMBER_CUSTOMER');
+  const manufacturerPartId = bru.getVar('CAR_MANUFACTURER_PART_ID');
+  
+  //const queryParam = '{"name":"customerPartId","value":"'+materialNumberCustomer+'"},{"name":"manufacturerPartId","value":"'+materialNumberSupplier+'"}';
+  const queryParam = '{"name":"manufacturerPartId","value":"'+manufacturerPartId+'"}';
+  
+  const encodedQueryParam = Buffer.from(queryParam).toString("base64");
+  bru.setVar('DTR_QUERY_SPECIFIC_ASSET_IDS_ENCODED', encodedQueryParam);
+  
+}

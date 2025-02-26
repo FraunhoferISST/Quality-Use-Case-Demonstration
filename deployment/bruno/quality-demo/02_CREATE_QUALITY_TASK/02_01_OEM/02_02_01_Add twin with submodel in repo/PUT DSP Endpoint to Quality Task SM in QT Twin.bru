@@ -1,0 +1,70 @@
+meta {
+  name: PUT DSP Endpoint to Quality Task SM in QT Twin
+  type: http
+  seq: 9
+}
+
+put {
+  url: {{CUSTOMER_SM_REGISTRY}}/submodel-descriptors/{{CUSTOMER_QT_AAS_SM_QUALITY_TASK_TECH_ID_ENCODED}}
+  body: json
+  auth: none
+}
+
+params:query {
+  ~null: 
+}
+
+headers {
+  Edc-Bpn: {{SUPPLIER_BPNL}}
+}
+
+body:json {
+  {
+    "description": [
+      {
+        "language": "en",
+        "text": "A list of quality tasks (qTask)."
+      }
+    ],
+    "idShort": "Vehicles",
+    "id": "{{CUSTOMER_QT_AAS_SM_QUALITY_TASK_TECH_ID}}",
+    "semanticId": {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "ConceptDescription",
+          "value": "urn:samm:io.catenax.quality_task:2.0.0#QualityTask"
+        }
+      ]
+    },
+    "endpoints": [
+      {
+        "protocolInformation": {
+          "href": "{{CUSTOMER_SM_REPO}}/submodels/{{CUSTOMER_QT_AAS_SM_QUALITY_TASK_TECH_ID_ENCODED}}",
+          "endpointProtocol": "http"
+        },
+        "interface": "SUBMODEL-3.0"
+      },
+      {
+        "interface": "SUBMODEL-3.0",
+        "protocolInformation": {
+          "href": "{{CUSTOMER_DP_EDC_EXT_HOSTNAME}}/api/public/{{CUSTOMER_QT_AAS_SM_QUALITY_TASK_TECH_ID_ENCODED}}",
+          "endpointProtocol": "HTTP",
+          "endpointProtocolVersion": [
+            "1.1"
+          ],
+          "subprotocol": "DSP",
+          "subprotocolBodyEncoding": "plain",
+          "subprotocolBody": "id={{CUSTOMER_SM_REPO_ASSET_ID}};dspEndpoint={{CUSTOMER_EDC}}/api/v1/dsp",
+          "securityAttributes": [
+            {
+              "type": "NONE",
+              "key": "NONE",
+              "value": "NONE"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

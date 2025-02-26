@@ -1,0 +1,143 @@
+meta {
+  name: Configure Car Discovery
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{CUSTOMER_AAS_DISCOVERY}}/lookup/shells/{{CUSTOMER_CAR_AAS_TECH_ID_ENCODED}}
+  body: json
+  auth: none
+}
+
+params:query {
+  ~null: 
+}
+
+headers {
+  Edc-Bpn: {{SUPPLIER_BPNL}}
+}
+
+body:json {
+  [
+    {
+      "name": "digitalTwinType",
+      "value": "PartInstance",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "van",
+      "value": "{{CAR_VAN}}",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "globalAssetId",
+      "value": "{{CUSTOMER_CAR_AAS_CX_ID}}",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "manufacturerId",
+      "value": "{{CUSTOMER_BPNL}}",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "manufacturerPartId",
+      "value": "{{CAR_MANUFACTURER_PART_ID}}",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "partInstanceId",
+      "value": "{{CAR_VAN}}",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "intrinsicId",
+      "value": "{{CAR_VAN}}",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    }
+  ]
+}

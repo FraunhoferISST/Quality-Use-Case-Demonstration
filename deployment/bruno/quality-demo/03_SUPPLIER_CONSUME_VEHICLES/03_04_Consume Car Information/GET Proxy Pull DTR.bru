@@ -1,0 +1,21 @@
+meta {
+  name: GET Proxy Pull DTR
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://customer-data-plane:8285/api/public/shell-descriptors
+  body: none
+  auth: apikey
+}
+
+headers {
+  Authorization: {{SUPPLIER_DTR_EDR_AUTH}}
+}
+
+auth:apikey {
+  key: X-API-KEY
+  value: {{SUPPLIER_EDC_API_KEY}}
+  placement: header
+}

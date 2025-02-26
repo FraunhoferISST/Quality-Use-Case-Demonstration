@@ -1,0 +1,51 @@
+meta {
+  name: Initiate Transfer
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{SUPPLIER_EDC}}/{{MANAGEMENT_PATH}}/v3/transferprocesses
+  body: json
+  auth: apikey
+}
+
+auth:apikey {
+  key: X-API-KEY
+  value: {{SUPPLIER_EDC_API_KEY}}
+  placement: header
+}
+
+body:json {
+  {
+      "@context": {
+          "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+      },
+      "assetId": "{{ASSET_ID}}",
+      "counterPartyAddress": "{{CUSTOMER_EDC_EXT_HOSTNAME}}/{{PROTOCOL_PATH}}",
+      "connectorId": "{{CUSTOMER_BPNL}}",
+      "contractId": "{{SUPPLIER_SM_REPO_CONTRACT_AGREEMENT_ID}}",
+      "transferType": "HttpData-PULL",
+      "dataDestination": {
+          "type": "HttpProxy"
+      },
+      "privateProperties": {
+          "receiverHttpEndpoint": "{{BACKEND_SERVICE}}"
+      },
+      "protocol": "dataspace-protocol-http",
+      "callbackAddresses":{
+          "events": [
+              "transfer.process.started"
+          ],
+          "uri": "http://mock-util-service:80/edr-log"
+      }
+  }
+}
+
+tests {
+  var jsonData = res.getBody();
+  bru.setVar("SUPPLIER_SM_REPO_TRANSFER_PROCESS_ID", jsonData["@id"]);
+  
+  // wait two seconds for transfer
+  await new Promise(resolve => setTimeout(resolve, 2000));
+}

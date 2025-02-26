@@ -1,0 +1,222 @@
+#
+# Copyright (c) 2023 Volkswagen AG
+# Copyright (c) 2023 Fraunhofer-Gesellschaft zur Foerderung der angewandten Forschung e.V. (represented by Fraunhofer ISST)
+# Copyright (c) 2023 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License, Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0.
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+services:
+
+#  dtr-customer:
+#    image: tractusx/sldt-digital-twin-registry:0.5.0
+#    container_name: dtr-customer
+#    depends_on:
+#      postgres-all:
+#        condition: service_healthy
+#    healthcheck:
+#      test: ["CMD-SHELL", "wget -q --spider http://dtr-customer:4243/actuator/health/readiness"]
+#      interval: 4s
+#      timeout: 3s
+#      retries: 20
+#    ports:
+#      - "127.0.0.1:4243:4243"
+#    environment:
+#      SPRING_DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-all:5432/dtr_customer
+#      SPRING_DATASOURCE_USERNAME: ${PG_USER}
+#      SPRING_DATASOURCE_PASSWORD: ${PG_PW}
+#      REGISTRY_IDM_OWNING_TENANT_ID: ${CUSTOMER_BPNL}
+#      REGISTRY_USE_GRANULAR_ACCESS_CONTROL: false
+#      JAVA_TOOL_OPTIONS: "-Xms512m -Xmx1024m"
+#      # deactivate oauth idp by commenting out SPRING_PROFILES_ACTIVE
+#      # SPRING_PROFILES_ACTIVE: local
+#      # Note: Currently DTR only allows one client, thus manage client must be used for all.
+#      REGISTRY_IDM_PUBLIC_CLIENT_ID: ${KC_MANAGE_CLIENT_ID}
+#      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "http://keycloak:8080/realms/Customer"
+#    networks:
+#      - miw-net
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway" # Adjusts container's host file to allow for communication with docker-host machine
+
+  postgres-all:
+    image: postgres:15.4-alpine
+    container_name: postgres-all
+    environment:
+      POSTGRES_DB: puris_customer # create puris db for customer, rest init script
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PW}
+    ports:
+      - "127.0.0.1:5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready  -d puris_customer -U ${PG_USER}"]
+      interval: 4s
+      timeout: 3s
+      retries: 15
+    networks:
+      - miw-net
+    deploy:
+      resources:
+        limits:
+          memory: 512mb
+          cpus: "0.5"
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./postgres/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+  edc-customer-control-plane:
+    depends_on:
+      postgres-all:
+        condition: service_healthy
+    restart: on-failure
+    extends:
+      file: ./tractus-x-edc/docker-compose.yaml
+      service: control-plane
+    container_name: customer-control-plane
+    env_file:
+      - ./tractus-x-edc/config/customer/control-plane.properties
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://edc-customer-control-plane:8180/api/check/health"]
+      interval: 4s
+      timeout: 3s
+      retries: 20
+    ports:
+      - "127.0.0.1:8180:8180"
+      - "127.0.0.1:8181:8181"
+      - "127.0.0.1:8182:8182"
+      - "127.0.0.1:8183:8183"
+      - "127.0.0.1:8184:8184"
+    networks:
+      - miw-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Adjusts container's host file to allow for communication with docker-host machine
+
+  edc-customer-data-plane:
+    depends_on:
+      postgres-all:
+        condition: service_healthy
+    restart: on-failure
+    extends:
+      file: ./tractus-x-edc/docker-compose.yaml
+      service: data-plane
+    container_name: customer-data-plane
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://edc-customer-data-plane:8280/api/check/health"]
+      interval: 4s
+      timeout: 3s
+      retries: 20
+    ports:
+      - "127.0.0.1:8280:8280"
+      - "127.0.0.1:8281:8281"
+      - "127.0.0.1:8283:8283"
+      - "127.0.0.1:8285:8285"
+      - "127.0.0.1:8299:8299"
+    env_file:
+      - ./tractus-x-edc/config/customer/data-plane.properties
+    networks:
+      - miw-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Adjusts container's host file to allow for communication with docker-host machine
+
+#  dtr-supplier:
+#    image: tractusx/sldt-digital-twin-registry:0.5.0
+#    container_name: dtr-supplier
+#    depends_on:
+#      postgres-all:
+#        condition: service_healthy
+#    healthcheck:
+#      test: ["CMD-SHELL", "wget -q --spider http://dtr-supplier:4243/actuator/health/readiness"]
+#      interval: 4s
+#      timeout: 3s
+#      retries: 20
+#    ports:
+#      - "127.0.0.1:4244:4243"
+#    environment:
+#      SPRING_DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-all:5432/dtr_supplier
+#      SPRING_DATASOURCE_USERNAME: ${PG_USER}
+#      SPRING_DATASOURCE_PASSWORD: ${PG_PW}
+#      REGISTRY_IDM_OWNING_TENANT_ID: ${SUPPLIER_BPNL}
+#      REGISTRY_USE_GRANULAR_ACCESS_CONTROL: false
+#      JAVA_TOOL_OPTIONS: "-Xms512m -Xmx1024m"
+#      # deactivate oauth idp by commenting out SPRING_PROFILES_ACTIVE
+#      # SPRING_PROFILES_ACTIVE: local
+#      # Note: Currently DTR only allows one client, thus manage client must be used for all.
+#      REGISTRY_IDM_PUBLIC_CLIENT_ID: ${KC_MANAGE_CLIENT_ID}
+#      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "http://keycloak:8080/realms/Supplier"
+#    networks:
+#      - miw-net
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway" # Adjusts container's host file to allow for communication with docker-host machine
+
+  edc-supplier-control-plane:
+    depends_on:
+      postgres-all:
+        condition: service_healthy
+    restart: on-failure
+    extends:
+      file: ./tractus-x-edc/docker-compose.yaml
+      service: control-plane
+    container_name: supplier-control-plane
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://edc-supplier-control-plane:9180/api/check/health"]
+      interval: 4s
+      timeout: 3s
+      retries: 20
+    ports:
+      - "127.0.0.1:9180:9180"
+      - "127.0.0.1:9181:9181"
+      - "127.0.0.1:9182:9182"
+      - "127.0.0.1:9183:9183"
+      - "127.0.0.1:9184:9184"
+      - "127.0.0.1:1044:1044"
+    env_file:
+      - ./tractus-x-edc/config/supplier/control-plane.properties
+    networks:
+      - miw-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Adjusts container's host file to allow for communication with docker-host machine
+
+  edc-supplier-data-plane:
+    depends_on:
+      postgres-all:
+        condition: service_healthy
+    restart: on-failure
+    extends:
+      file: ./tractus-x-edc/docker-compose.yaml
+      service: data-plane
+    container_name: supplier-data-plane
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://edc-supplier-data-plane:9280/api/check/health"]
+      interval: 4s
+      timeout: 3s
+      retries: 20
+    ports:
+      - "127.0.0.1:9280:9280"
+      - "127.0.0.1:9281:9281"
+      - "127.0.0.1:9283:9283"
+      - "127.0.0.1:9285:9285"
+      - "127.0.0.1:9299:9299"
+    env_file:
+      - ./tractus-x-edc/config/supplier/data-plane.properties
+    networks:
+      - miw-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Adjusts container's host file to allow for communication with docker-host machine
+
+networks:
+  miw-net:
+    external: true

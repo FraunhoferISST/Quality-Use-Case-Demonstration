@@ -1,0 +1,55 @@
+meta {
+  name: Create Contract Definitiion
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{CUSTOMER_EDC}}/{{MANAGEMENT_PATH}}/v3/contractdefinitions
+  body: json
+  auth: apikey
+}
+
+auth:apikey {
+  key: X-API-KEY
+  value: {{CUSTOMER_EDC_API_KEY}}
+  placement: header
+}
+
+body:json {
+  {
+    "@context": {
+      "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+    },
+    "@id": "{{CUSTOMER_CONTRACT_DEFINITION_ID}}",
+    "@type": "ContractDefinition",
+    "accessPolicyId": "{{CUSTOMER_ACCESS_POLICY_ID}}",
+    "contractPolicyId": "{{CUSTOMER_CONTRACT_POLICY_ID}}",
+    "assetsSelector": {
+        "@type": "CriterionDto",
+        "operandLeft": "privateProperties.'{{EDC_NAMESPACE}}partner'",
+        "operator": "=",
+        "operandRight": "{{SUPPLIER_BPNL}}"
+      }
+    /*{
+        "@type": "CriterionDto",
+        "operandLeft": "{{EDC_NAMESPACE}}id",
+        "operator": "=",
+        "operandRight": "{{CUSTOMER_SM_REPO_ASSET_ID}}"
+      }
+    [
+      {
+        "@type": "CriterionDto",
+        "operandLeft": "{{EDC_NAMESPACE}}id",
+        "operator": "=",
+        "operandRight": "{{CUSTOMER_SM_REPO_ASSET_ID}}"
+      },
+      {
+        "@type": "CriterionDto",
+        "operandLeft": "{{EDC_NAMESPACE}}id",
+        "operator": "=",
+        "operandRight": "{{CUSTOMER_REGISTRY_ASSET_ID}}"
+      }
+    ]*/
+  }
+}

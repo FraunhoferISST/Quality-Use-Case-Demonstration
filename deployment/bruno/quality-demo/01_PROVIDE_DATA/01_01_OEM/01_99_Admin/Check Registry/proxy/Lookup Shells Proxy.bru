@@ -1,0 +1,33 @@
+meta {
+  name: Lookup Shells Proxy
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{CUSTOMER_DTR_PROXY}}/lookup/shells?assetIds={{DTR_QUERY_SPECIFIC_ASSET_IDS_ENCODED}}
+  body: none
+  auth: none
+}
+
+params:query {
+  assetIds: {{DTR_QUERY_SPECIFIC_ASSET_IDS_ENCODED}}
+  ~null: 
+}
+
+headers {
+  Edc-Bpn: {{SUPPLIER_BPNL}}
+}
+
+script:pre-request {
+  // const materialNumberCustomer = bru.getEnvVar('CAR_MATERIAL_NUMBER_CUSTOMER');
+  const manufacturerPartId = bru.getVar('CAR_MANUFACTURER_PART_ID');
+  
+  //const queryParam = '{"name":"customerPartId","value":"'+materialNumberCustomer+'"},{"name":"manufacturerPartId","value":"'+materialNumberSupplier+'"}';
+  const queryParam = '{"name":"manufacturerPartId","value":"'+manufacturerPartId+'"}';
+  
+  const encodedQueryParam = Buffer.from(queryParam).toString("base64");
+  bru.setVar('DTR_QUERY_SPECIFIC_ASSET_IDS_ENCODED', encodedQueryParam);
+  bru.setVar('QUERY_PARAM', queryParam);
+  
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Get ShellDescriptors from AAS reg Proxy
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{CUSTOMER_DTR_PROXY}}/shell-descriptors/{{CUSTOMER_CAR_AAS_TECH_ID_ENCODED}}/submodel-descriptors/{{CUSTOMER_CAR_AAS_SM_VEHICLE_TECH_ID_ENCODED}}
+  body: none
+  auth: none
+}
+
+params:query {
+  ~null: 
+}
+
+headers {
+  Edc-Bpn: {{SUPPLIER_BPNL}}
+}

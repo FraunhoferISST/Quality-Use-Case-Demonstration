@@ -1,0 +1,19 @@
+meta {
+  name: Get SubmodelDescriptors
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{SUPPLIER_AAS_REGISTRY}}/shell-descriptors
+  body: none
+  auth: none
+}
+
+params:query {
+  ~null: 
+}
+
+headers {
+  Edc-Bpn: {{SUPPLIER_BPNL}}
+}

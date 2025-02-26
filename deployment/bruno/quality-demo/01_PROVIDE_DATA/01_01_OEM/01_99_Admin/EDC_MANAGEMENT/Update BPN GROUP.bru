@@ -1,0 +1,31 @@
+meta {
+  name: Update BPN GROUP
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{CUSTOMER_EDC}}/{{MANAGEMENT_PATH}}/business-partner-groups
+  body: json
+  auth: apikey
+}
+
+auth:apikey {
+  key: X-API-KEY
+  value: {{CUSTOMER_EDC_API_KEY}}
+  placement: header
+}
+
+body:json {
+  {
+    "@context": {
+      "tx": "https://w3id.org/tractusx/v0.0.1/ns/"
+    },
+    "@id": "{{SUPPLIER_BPNL}}",
+    "tx:groups": [
+      "{{BPNL_GROUP}}"
+      ,"Supplier-3"
+      ,"test"
+    ]
+  }
+}

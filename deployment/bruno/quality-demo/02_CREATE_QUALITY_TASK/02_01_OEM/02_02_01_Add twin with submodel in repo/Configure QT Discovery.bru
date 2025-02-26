@@ -1,0 +1,143 @@
+meta {
+  name: Configure QT Discovery
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{CUSTOMER_AAS_DISCOVERY}}/lookup/shells/{{CUSTOMER_QT_AAS_TECH_ID_ENCODED}}
+  body: json
+  auth: none
+}
+
+params:query {
+  ~null: 
+}
+
+headers {
+  Edc-Bpn: {{SUPPLIER_BPNL}}
+}
+
+body:json {
+  [
+    {
+      "name": "digitalTwinType",
+      "value": "QualityTask",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "globalAssetId",
+      "value": "{{CUSTOMER_QT_AAS_CX_ID}}",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "manufacturerId",
+      "value": "{{SUPPLIER_BPNL}}",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "manufacturerPartId",
+      "value": "{{CU_MANUFACTURER_PART_ID}}",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "partInstanceId",
+      "value": "{{CU_PART_INSTANCE_ID}}",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "intrinsicId",
+      "value": "{{CU_PART_INSTANCE_ID}}",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "customerPartId",
+      "value": "{{CU_CUSTOMER_PART_ID}}",
+      "externalSubjectId": {
+        "type": "ExternalReference",
+        "keys": [
+          {
+            "type": "GlobalReference",
+            "value": "BPNL1234567890ZZ"
+          },
+          {
+            "type": "GlobalReference",
+            "value": "BPNL4444444444XX"
+          }
+        ]
+      }
+    }
+  ]
+}

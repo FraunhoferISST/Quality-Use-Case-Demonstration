@@ -1,0 +1,17 @@
+meta {
+  name: Delete all BPN Groups for BPNL
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{CUSTOMER_EDC}}/{{MANAGEMENT_PATH}}/business-partner-groups/{{SUPPLIER_BPNL}}
+  body: none
+  auth: apikey
+}
+
+auth:apikey {
+  key: X-API-KEY
+  value: {{CUSTOMER_EDC_API_KEY}}
+  placement: header
+}

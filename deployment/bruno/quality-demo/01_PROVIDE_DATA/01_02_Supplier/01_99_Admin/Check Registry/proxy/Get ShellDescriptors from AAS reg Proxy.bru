@@ -1,0 +1,19 @@
+meta {
+  name: Get ShellDescriptors from AAS reg Proxy
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{SUPPLIER_DTR_PROXY}}/shell-descriptors/{{SUPPLIER_CU_AAS_SM_QUALITY_ANALYSIS_TECH_ID_ENCODED}}/submodel-descriptors/{{SUPPLIER_CU_AAS_SM_QUALITY_ANALYSIS_TECH_ID_ENCODED}}
+  body: none
+  auth: none
+}
+
+params:query {
+  ~null: 
+}
+
+headers {
+  Edc-Bpn: {{SUPPLIER_BPNL}}
+}

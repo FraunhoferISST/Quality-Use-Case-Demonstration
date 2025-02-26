@@ -1,0 +1,19 @@
+meta {
+  name: Get SubmodelDescriptors from SM reg
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{CUSTOMER_SM_REGISTRY}}/submodel-descriptors/{{CUSTOMER_QT_AAS_SM_VEHICLE_TECH_ID_ENCODED}}
+  body: none
+  auth: none
+}
+
+params:query {
+  ~null: 
+}
+
+headers {
+  Edc-Bpn: {{SUPPLIER_BPNL}}
+}

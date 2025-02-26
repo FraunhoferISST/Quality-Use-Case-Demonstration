@@ -1,0 +1,70 @@
+meta {
+  name: PUT DSP Endpoint to MPQA SM in CU Reg
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{SUPPLIER_AAS_REGISTRY}}/shell-descriptors/{{SUPPLIER_CU_AAS_TECH_ID_ENCODED}}/submodel-descriptors
+  body: json
+  auth: none
+}
+
+params:query {
+  ~null: 
+}
+
+headers {
+  Edc-Bpn: {{SUPPLIER_BPNL}}
+}
+
+body:json {
+  {
+    "description": [
+      {
+        "language": "en",
+        "text": "This aspect model is used to exchange manufacturing-oriented information of several parts, e.g. for quality tasks"
+      }
+    ],
+    "idShort": "ManufacturedPartsQualityAnalysis",
+    "id": "{{SUPPLIER_CU_AAS_SM_QUALITY_ANALYSIS_TECH_ID}}",
+    "semanticId": {
+      "type": "ModelReference",
+      "keys": [
+        {
+          "type": "ConceptDescription",
+          "value": "urn:samm:io.catenax.manufactured_parts_quality_information:2.1.0#ManufacturedPartsQualityInformation"
+        }
+      ]
+    },
+    "endpoints": [
+      {
+        "protocolInformation": {
+          "href": "http://localhost:9381/submodels/{{SUPPLIER_CU_AAS_SM_QUALITY_ANALYSIS_TECH_ID_ENCODED}}",
+          "endpointProtocol": "http"
+        },
+        "interface": "SUBMODEL-3.0"
+      },
+      {
+        "interface": "SUBMODEL-3.0",
+        "protocolInformation": {
+          "href": "{{SUPPLIER_DP_EDC_EXT_HOSTNAME}}/api/public/{{SUPPLIER_CU_AAS_SM_QUALITY_ANALYSIS_TECH_ID_ENCODED}}",
+          "endpointProtocol": "HTTP",
+          "endpointProtocolVersion": [
+            "1.1"
+          ],
+          "subprotocol": "DSP",
+          "subprotocolBodyEncoding": "plain",
+          "subprotocolBody": "id={{SUPPLIER_SM_REPO_ASSET_ID}};dspEndpoint={{SUPPLIER_EDC}}/api/v1/dsp",
+          "securityAttributes": [
+            {
+              "type": "NONE",
+              "key": "NONE",
+              "value": "NONE"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

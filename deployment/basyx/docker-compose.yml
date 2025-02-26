@@ -1,0 +1,213 @@
+services:
+  customer-aas-env:
+    image: eclipsebasyx/aas-environment:2.0.0-SNAPSHOT
+    container_name: customer-aas-env
+    environment:
+      - SERVER_PORT=8081
+    volumes:
+      - ./aas:/application/aas
+      - ./config/customer/aas-env.properties:/application/application.properties
+    ports:
+      - '8381:8081'
+    restart: always
+    depends_on:
+      customer-aas-registry:
+        condition: service_healthy
+      customer-sm-registry:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - miw-net
+  customer-aas-registry:
+    image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-SNAPSHOT
+    container_name: customer-aas-registry
+    ports:
+      - '8382:8080'
+    environment:
+      - SERVER_PORT=8080
+    volumes:
+      - ./config/customer/aas-registry.yml:/workspace/config/application.yml
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - miw-net
+  customer-sm-registry:
+    image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-SNAPSHOT
+    container_name: customer-sm-registry
+    ports:
+      - '8383:8080'
+    environment:
+      - SERVER_PORT=8080
+    volumes:
+      - ./config/customer/sm-registry.yml:/workspace/config/application.yml
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - miw-net
+  customer-aas-discovery:
+    image: eclipsebasyx/aas-discovery:2.0.0-SNAPSHOT
+    container_name: customer-aas-discovery
+    environment:
+      - SERVER_PORT=8081
+    volumes:
+      - ./config/customer/aas-discovery.properties:/application/application.properties
+    ports:
+      - '8384:8081'
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - miw-net
+  mongo:
+    image: mongo:5.0.10
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoAdmin
+      MONGO_INITDB_ROOT_PASSWORD: mongoPassword
+    restart: always
+    healthcheck:
+      test: mongo
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - miw-net
+  customer-aas-web-ui:
+    image: eclipsebasyx/aas-gui:SNAPSHOT
+    container_name: customer-aas-ui
+    ports:
+      - '3000:3000'
+    environment:
+      AAS_REGISTRY_PATH: http://localhost:8382/shell-descriptors
+      SUBMODEL_REGISTRY_PATH: http://localhost:8383/submodel-descriptors
+      AAS_REPO_PATH: http://localhost:8381/shells
+      SUBMODEL_REPO_PATH: http://localhost:8381/submodels
+      CD_REPO_PATH: http://localhost:8381/concept-descriptions
+      AAS_DISCOVERY_PATH: http://localhost:8384/lookup/shells
+    restart: always
+    depends_on:
+      customer-aas-env:
+        condition: service_healthy
+    networks:
+      - miw-net
+  customer-nginx:
+    image: nginx:alpine
+    container_name: customer-nginx
+    ports:
+      - '8385:80'
+    volumes:
+      - ./config/customer/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      customer-aas-registry:
+        condition: service_healthy
+      customer-aas-discovery:
+        condition: service_healthy
+    networks:
+      - miw-net
+  supplier-aas-env:
+    image: eclipsebasyx/aas-environment:2.0.0-SNAPSHOT
+    container_name: supplier-aas-env
+    environment:
+      - SERVER_PORT=8081
+    volumes:
+      - ./aas:/application/aas
+      - ./config/supplier/aas-env.properties:/application/application.properties
+    ports:
+      - '9381:8081'
+    restart: always
+    depends_on:
+      supplier-aas-registry:
+        condition: service_healthy
+      supplier-sm-registry:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - miw-net
+  supplier-aas-registry:
+    image: eclipsebasyx/aas-registry-log-mongodb:2.0.0-SNAPSHOT
+    container_name: supplier-aas-registry
+    ports:
+      - '9382:8080'
+    environment:
+      - SERVER_PORT=8080
+    volumes:
+      - ./config/supplier/aas-registry.yml:/workspace/config/application.yml
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - miw-net
+  supplier-sm-registry:
+    image: eclipsebasyx/submodel-registry-log-mongodb:2.0.0-SNAPSHOT
+    container_name: supplier-sm-registry
+    ports:
+      - '9383:8080'
+    environment:
+      - SERVER_PORT=8080
+    volumes:
+      - ./config/supplier/sm-registry.yml:/workspace/config/application.yml
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - miw-net
+  supplier-aas-discovery:
+    image: eclipsebasyx/aas-discovery:2.0.0-SNAPSHOT
+    container_name: supplier-aas-discovery
+    environment:
+      - SERVER_PORT=8081
+    volumes:
+      - ./config/supplier/aas-discovery.properties:/application/application.properties
+    ports:
+      - '9384:8081'
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - miw-net
+  supplier-aas-web-ui:
+    image: eclipsebasyx/aas-gui:SNAPSHOT
+    container_name: supplier-aas-ui
+    ports:
+      - '3001:3000'
+    environment:
+      AAS_REGISTRY_PATH: http://localhost:9382/shell-descriptors
+      SUBMODEL_REGISTRY_PATH: http://localhost:9383/submodel-descriptors
+      AAS_REPO_PATH: http://localhost:9381/shells
+      SUBMODEL_REPO_PATH: http://localhost:9381/submodels
+      CD_REPO_PATH: http://localhost:9381/concept-descriptions
+      AAS_DISCOVERY_PATH: http://localhost:9384/lookup/shells
+    restart: always
+    depends_on:
+      supplier-aas-env:
+        condition: service_healthy
+    networks:
+      - miw-net
+  supplier-nginx:
+    image: nginx:alpine
+    container_name: supplier-nginx
+    ports:
+      - '9385:80'
+    volumes:
+      - ./config/supplier/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      supplier-aas-registry:
+        condition: service_healthy
+      supplier-aas-discovery:
+        condition: service_healthy
+    networks:
+      - miw-net
+
+networks:
+  miw-net:
+    external: true

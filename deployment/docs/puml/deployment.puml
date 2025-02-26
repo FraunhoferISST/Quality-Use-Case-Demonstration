@@ -1,0 +1,73 @@
+@startuml
+skinparam linetype polyline
+skinparam nodesep 75
+skinparam ranksep 50
+
+package "OEM" {
+
+  [BaSyx Dashboard] as basyx_dash_cus
+
+  [BaSyx Submodel Registry Server] as sm_reg_cus
+  [BaSyx AAS Registry Server] as aas_reg_cus
+  [BaSyx AAS Discovery Server] as aas_dis_cus
+  [BaSyx AAS Environment Server] as aas_env_cus
+
+  [Proxy Registry] as nginx_cus
+
+  basyx_dash_cus -- sm_reg_cus
+  basyx_dash_cus -- aas_dis_cus
+  basyx_dash_cus -- aas_reg_cus
+  basyx_dash_cus -- aas_env_cus
+
+  aas_reg_cus -- nginx_cus
+  aas_dis_cus -- nginx_cus
+  sm_reg_cus -- nginx_cus
+
+  [Tractus-X Connector OEM] as edc_cus
+
+  nginx_cus -- edc_cus
+  aas_env_cus -- edc_cus
+
+}
+
+package "CX" {
+
+  [Managed Identity Wallet\nMock IAM] as miw
+  [BPNL Did Resolution Service] as bdrs
+
+}
+
+package "Supplier" {
+  [BaSyx Submodel Registry Server] as sm_reg_sup
+  [BaSyx AAS Registry Server] as aas_reg_sup
+  [BaSyx AAS Discovery Server] as aas_dis_sup
+  [BaSyx AAS Environment Server] as aas_env_sup
+  [Proxy Registry] as nginx_sup
+
+  [Tractus-X Connector Supplier] as edc_sup
+
+  edc_sup -- nginx_sup
+  edc_sup -- aas_env_sup
+
+  [BaSyx Dashboard] as basyx_dash_sup
+
+  nginx_sup -- aas_reg_sup
+  nginx_sup -- aas_dis_sup
+  nginx_sup -- sm_reg_sup
+
+  sm_reg_sup -- basyx_dash_sup
+  aas_dis_sup -- basyx_dash_sup
+  aas_reg_sup -- basyx_dash_sup
+  aas_env_sup -- basyx_dash_sup
+
+}
+
+edc_cus -- miw
+edc_cus -- bdrs
+
+miw -- edc_sup
+bdrs -- edc_sup
+
+edc_cus -- edc_sup
+
+@enduml
