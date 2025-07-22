@@ -3,32 +3,32 @@
 Based on the [Eclipse Tractus-X project](https://projects.eclipse.org/projects/automotive.tractusx) we provide a
 technical demonstration for the Manufacturing-X Stack combining:
 
-- Industry 4.0 Components using the Asset Administration Shell (BaSyx)
-- A Data Space Protocol enabled application (Tractus-X Connector)
-- A Decentralized Claims Protocol enabled application (Tractus-X Connector, mocked Credential Service)
+- Industry 4.0 Components using the Asset Administration Shell ([BaSyx](https://github.com/eclipse-basyx))
+- A Data Space Protocol enabled application ([Tractus-X Connector](https://github.com/eclipse-tractusx/tractusx-edc))
+- A Decentralized Claims Protocol enabled application ([Tractus-X Connector](https://github.com/eclipse-tractusx/tractusx-edc), mocked Credential Service)
 
 It uses the Catena-X quality use case and applies it closer to the Catena-X digital twin and industry core pattern.
 It especially ignores mass data transfers.
 
-Spin up and run via [INSTALL.md](./deployment/INSTALL.md
+Spin up and run via [INSTALL.md](./deployment/INSTALL.md)
 
 ## Test Data
 
 ### Digital Twins
 
-The following table illustrates the distribution of twins and the specific asset IDs used for resistration and 
+The following table illustrates the distribution of twins and the specific asset IDs used for registration and 
 discovery.
 
 > **NOTE**
 > 
 > The digital twin for the quality task ON SUPPLIER SIDE has not been created in this demonstration. It would be a 
-> distributed / shared digital twin following the respective pattern of the [Digital Twin KIT](https://eclipse-tractusx.github.io/docs-kits/kits/Digital%20Twin%20Kit/Software%20Development%20View/dt-kit-interaction-patterns).
+> distributed / shared digital twin following the respective pattern of the [Digital Twin KIT](https://eclipse-tractusx.github.io/docs-kits/kits/digital-twin-kit/software-development-view/interaction-patterns).
 
 
 | Industry Core Pendant     | Digital Twin Car                                                                                                                                                                                              | Quality Task (OEM)                                                 | Digital Twin Control Unit                                                                                                                                                                                     | Quality Task (Supplier)                       |
 |---------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
 | Partner                   | OEM                                                                                                                                                                                                           | OEM                                                                | Supplier                                                                                                                                                                                                      | Supplier                                      |
-| Industry Core pendant     | [Part Instance](https://eclipse-tractusx.github.io/docs-kits/kits/Industry%20Core%20Kit/Software%20Development%20View/Digital%20Twins%20Development%20View%20Industry%20Core%20Kit#property-specificassetids) | unstandardized process / concept twin                              | [Part Instance](https://eclipse-tractusx.github.io/docs-kits/kits/Industry%20Core%20Kit/Software%20Development%20View/Digital%20Twins%20Development%20View%20Industry%20Core%20Kit#property-specificassetids) | unstandardized process / concept twin         |
+| Industry Core pendant     | [Part Instance](https://eclipse-tractusx.github.io/docs-kits/kits/industry-core-kit/software-development-view/aspect-models) | unstandardized process / concept twin                              | [Part Instance](https://eclipse-tractusx.github.io/docs-kits/kits/industry-core-kit/software-development-view/aspect-models) | unstandardized process / concept twin         |
 | van                       | 3747429FGH382923974682                                                                                                                                                                                        | None (don't use)                                                   | None (don't use)                                                                                                                                                                                              | None (don't use)                              |
 | globalAssetId / catenaxId | urn:uuid:580d3adf-1981-44a0-a214-13d6ceed9379                                                                                                                                                                 | urn:uuid:c5162db2-57ab-4728-a02a-7831be99d95b                      | urn:uuid:c5162db2-57ab-4728-a02a-7831be99d95b                                                                                                                                                                 | urn:uuid:430f56d3-1234-1234-1234-efab12341234 |
 | manufacturerId            | BPNL4444444444XX (customerBPNL)                                                                                                                                                                               | BPNL1234567890ZZ (= supplierBPNL)                                  | BPNL1234567890ZZ (= supplierBPNL)                                                                                                                                                                             | BPNL1234567890ZZ (supplierBPNL)               |
@@ -41,7 +41,7 @@ discovery.
 
 ### Semantic Models
 
-The following smenatic models are created for the digital twins.
+The following smeantic models are created for the digital twins.
 
 | Partner  | semanticId with link                                                                                                                           | Digital Twin |
 |----------|------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
@@ -50,15 +50,15 @@ The following smenatic models are created for the digital twins.
 | OEM      | [urn:samm:io.catenax.fleet.vehicles:3.0.0](https://github.com/eclipse-tractusx/sldt-semantic-models/tree/main/io.catenax.fleet.vehicles/3.0.0) | Quality Task |
 | Supplier | [urn:samm:io.catenax.manufactured_parts_quality_analysis:2.1.0](https://github.com/eclipse-tractusx/sldt-semantic-models/tree/main/io.catenax.manufactured_parts_quality_information/2.1.0)                                                                               | Control Unit   |
 
-Note other models are not used as it's only a tech demo. The Industry Core Models would be suitable for master data.
+Note that other models are not used as it's only a tech demo. The Industry Core Models would be suitable for master data.
 
 ### Partners
 
-The following lists give an overview about the partners used in the demonstration.
+The following lists give an overview of the partners used in the demonstration.
 
 #### OEM
 
-Overall the customer has the following information:
+Overall, the customer has the following information:
 
 - BPNL: BPNL4444444444XX
 - Name: Car Manufacturer
