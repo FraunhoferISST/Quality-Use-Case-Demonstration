@@ -41,7 +41,7 @@ discovery.
 
 ### Semantic Models
 
-The following smeantic models are created for the digital twins.
+The following semantic models are created for the digital twins.
 
 | Partner  | semanticId with link                                                                                                                           | Digital Twin |
 |----------|------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
@@ -73,7 +73,7 @@ Overall, the customer has the following information:
 
 #### Supplier
 
-Overall the supplier has the following information:
+Overall, the supplier has the following information:
 
 - BPNL: BPNL1234567890ZZ
 - Name: Control Unit Supplier
