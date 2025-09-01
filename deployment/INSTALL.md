@@ -23,21 +23,21 @@ Also see this [additional information about using Docker in combination with WSL
 
 ```shell
 cd deployment
-sh deploy.sh -cl
+sudo sh deploy.sh -cl
 ```
 
 Open new terminal to start basyx (can be done in parallel)
 ```shell
 cd deployment/basyx
-docker compose up 
+sudo docker compose up 
 ```
 
 Get logs of dcp / wallet mock and edcs in seperate window (optional)
 
 ```shell
 cd deployment
-docker compose -f docker-compose.yaml -f docker-compose-infrastructure.yaml logs -f mock-util-service \
-                  edc-customer-control-plane edc-customer-data-plane edc-supplier-control-plane edc-supplier-data-plane
+sudo docker compose -f docker-compose.yaml -f docker-compose-infrastructure.yaml logs -f mock-util-service \
+                       edc-customer-control-plane edc-customer-data-plane edc-supplier-control-plane edc-supplier-data-plane
 ```
 
 > If you don't care about what has been spinned up, go to the next chapter to run bruno.
